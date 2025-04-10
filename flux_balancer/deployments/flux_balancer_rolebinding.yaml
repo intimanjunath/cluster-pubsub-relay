@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: flux-balancer-binding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: flux-balancer-sa
+  namespace: default
+roleRef:
+  kind: Role
+  name: flux-balancer-role
+  apiGroup: rbac.authorization.k8s.io
