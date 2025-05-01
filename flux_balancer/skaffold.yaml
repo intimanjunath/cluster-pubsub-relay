@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta6
+kind: Config
+metadata:
+  name: flux-balancer
+
+build:
+  artifacts:
+  - image: flux_balancer
+    context: .
+    docker:
+      dockerfile: Dockerfile
+  local:
+    push: false
+
+deploy:
+  kubectl:
+    manifests:
+    - deployments/*.yaml
+    - ../deployments/flux_balancer.yaml
+    - ../deployments/flux_balancer_hpa.yaml

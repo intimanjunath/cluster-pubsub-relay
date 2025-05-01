@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta6
+kind: Config
+metadata:
+  name: flux-node
+
+build:
+  artifacts:
+  - image: flux_node
+    context: .
+    docker:
+      dockerfile: Dockerfile
+  local:
+    push: false
+
+deploy:
+  kubectl:
+    manifests:
+    - ../deployments/flux_config.yaml
+    - ../deployments/flux_node.yaml
+    - ../deployments/flux_node_hpa.yaml
