@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flux-config
+data:
+  S3_BUCKET_NAME: cluster-pubsub-relay-store
+  AWS_REGION: us-east-2

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flux-node
+spec:
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: flux-node
+  template:
+    metadata:
+      labels:
+        app: flux-node
+    spec:
+      containers:
+      - name: flux-node
+        image: flux_node:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: flux-config
+          - secretRef:
+              name: flux-secrets
+        resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "500m"
+                memory: "256Mi"
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: flux-node
+# spec:
+#   selector:
+#     app: flux-node
+#   ports:
+#   - protocol: TCP
+#     port: 80
+#     targetPort: 8080
+#   type: ClusterIP
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: flux-node
+# spec:
+#   type: NodePort
+#   selector:
+#     app: flux-node
+#   ports:
+#     - port: 80
+#       targetPort: 8080
+#       nodePort: 31888

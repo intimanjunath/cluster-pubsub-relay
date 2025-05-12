@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flux-balancer
+  labels:
+    app: flux-balancer
+spec:
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: flux-balancer
+  template:
+    metadata:
+      labels:
+        app: flux-balancer
+    spec:
+      serviceAccountName: flux-balancer-sa
+      containers:
+      - name: flux-balancer
+        image: flux_balancer:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8083
+        resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "500m"
+                memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flux-balancer
+  labels:
+    app: flux-balancer
+spec:
+  selector:
+    app: flux-balancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8083
+  type: NodePort
