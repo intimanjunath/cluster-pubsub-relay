@@ -182,3 +182,10 @@ FluxBalancer will be made available using a Kubernetes Service, to access the UR
 ```
 minikube service flux-balancer --url
 ```
+
+## Operational Notes
+
+- Keep `FluxBalancer` stateless so topics can be re-routed when `FluxNode` pods scale up or down.
+- Treat the S3 flush path as asynchronous durability, not replay storage. The hot path is optimized for low-latency fanout.
+- Use the Locust benchmark profile after changing HPA limits, pod counts, or WebSocket buffer behavior.
+- Store cloud credentials in Kubernetes secrets only; do not commit local `.env` files or access keys.
